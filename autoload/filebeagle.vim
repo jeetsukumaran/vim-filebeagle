@@ -45,49 +45,49 @@ endif
 function! s:NewMessenger(name)
 
     " allocate a new pseudo-object
-    let l:messenger = {}
-    let l:messenger["name"] = a:name
+    let messenger = {}
+    let messenger["name"] = a:name
     if empty(a:name)
-        let l:messenger["title"] = "FileBeagle"
+        let messenger["title"] = "FileBeagle"
     else
-        let l:messenger["title"] = "FileBeagle (" . l:messenger["name"] . ")"
+        let messenger["title"] = "FileBeagle (" . messenger["name"] . ")"
     endif
 
-    function! l:messenger.format_message(leader, msg) dict
+    function! messenger.format_message(leader, msg) dict
         return self.title . ": " . a:leader.a:msg
     endfunction
 
-    function! l:messenger.format_exception( msg) dict
+    function! messenger.format_exception( msg) dict
         return a:msg
     endfunction
 
-    function! l:messenger.send_error(msg) dict
+    function! messenger.send_error(msg) dict
         redraw
         echohl ErrorMsg
         echomsg self.format_message("[ERROR] ", a:msg)
         echohl None
     endfunction
 
-    function! l:messenger.send_warning(msg) dict
+    function! messenger.send_warning(msg) dict
         redraw
         echohl WarningMsg
         echomsg self.format_message("[WARNING] ", a:msg)
         echohl None
     endfunction
 
-    function! l:messenger.send_status(msg) dict
+    function! messenger.send_status(msg) dict
         redraw
         echohl None
         echomsg self.format_message("", a:msg)
     endfunction
 
-    function! l:messenger.send_info(msg) dict
+    function! messenger.send_info(msg) dict
         redraw
         echohl None
         echo self.format_message("", a:msg)
     endfunction
 
-    return l:messenger
+    return messenger
 
 endfunction
 " }}}2
@@ -218,13 +218,13 @@ endfunction
 function! s:NewDirectoryViewer()
 
     " initialize
-    let l:directory_viewer = {}
+    let directory_viewer = {}
 
     " Initialize object state.
     if has("title")
-        let l:directory_viewer["old_titlestring"] = &titlestring
+        let directory_viewer["old_titlestring"] = &titlestring
     else
-        let l:directory_viewer["old_titlestring"] = ""
+        let directory_viewer["old_titlestring"] = ""
     endif
 
     " filebeagle_buf_num, int
@@ -260,7 +260,7 @@ function! s:NewDirectoryViewer()
     " is_include_ignored, boolean
     "   -  If 1, files and directories matching patterns in ``wildignore``
     "      will be listed; otherwise, they will not be shown.
-    function! l:directory_viewer.open_dir(
+    function! directory_viewer.open_dir(
                 \ filebeagle_buf_num,
                 \ focus_dir,
                 \ focus_file,
@@ -309,7 +309,7 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " Sets buffer options.
-    function! l:directory_viewer.setup_buffer_opts() dict
+    function! directory_viewer.setup_buffer_opts() dict
 
         if self.prev_buf_num != self.buf_num
             " Only set these if not directly editing a directory (i.e.,
@@ -340,7 +340,7 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " Sets buffer syntax.
-    function! l:directory_viewer.setup_buffer_syntax() dict
+    function! directory_viewer.setup_buffer_syntax() dict
         if has("syntax")
             syntax clear
             syn match FileBeagleDirectoryEntry              '^.*[/\\]$'
@@ -349,13 +349,13 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " Sets buffer commands.
-    function! l:directory_viewer.setup_buffer_commands() dict
+    function! directory_viewer.setup_buffer_commands() dict
         command! -buffer -nargs=0 ClipPathname   :call b:filebeagle_directory_viewer.yank_target_name("full_path", "+")
         command! -buffer -nargs=0 ClipDirname    :call b:filebeagle_directory_viewer.yank_current_dirname("+")
     endfunction
 
     " Sets buffer key maps.
-    function! l:directory_viewer.setup_buffer_keymaps() dict
+    function! directory_viewer.setup_buffer_keymaps() dict
 
         """" Disabling of unused modification keys
         for key in [".", "p", "P", "C", "x", "X", "r", "R", "i", "I", "a", "A", "D", "S", "U"]
@@ -593,7 +593,7 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " Sets buffer status line.
-    function! l:directory_viewer.setup_buffer_statusline() dict
+    function! directory_viewer.setup_buffer_statusline() dict
         if has("statusline")
             let self.old_statusline=&l:statusline
             setlocal statusline=%{FileBeagleStatusLineCurrentDirInfo()}%=%{FileBeagleStatusLineFilterAndHiddenInfo()}
@@ -603,7 +603,7 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " Populates the buffer with the catalog index.
-    function! l:directory_viewer.render_buffer() dict
+    function! directory_viewer.render_buffer() dict
         setlocal modifiable
         call self.clear_buffer()
         let self.jump_map = {}
@@ -642,7 +642,7 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " Restore title and anything else changed
-    function! l:directory_viewer.wipe_and_restore() dict
+    function! directory_viewer.wipe_and_restore() dict
         try
             execute "bwipe! " . self.buf_num
         catch // " E517: No buffers were wiped out
@@ -659,7 +659,7 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " Close and quit the viewer.
-    function! l:directory_viewer.quit_buffer() dict
+    function! directory_viewer.quit_buffer() dict
         " if !isdirectory(bufname(self.prev_buf_num))
         " if self.prev_buf_num == self.buf_num
         "     " Avoid switching back to calling buffer if it is a (FileBeagle) directory
@@ -674,7 +674,7 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " Close and quit the viewer.
-    function! l:directory_viewer.close_window() dict
+    function! directory_viewer.close_window() dict
         execute "bwipe"
         " if self.prev_buf_num != self.buf_num
         "     execute "b " . self.prev_buf_num
@@ -684,12 +684,12 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " Clears the buffer contents.
-    function! l:directory_viewer.clear_buffer() dict
+    function! directory_viewer.clear_buffer() dict
         call cursor(1, 1)
         exec 'silent! normal! "_dG'
     endfunction
 
-    function! l:directory_viewer.read_target(pos, read_in_background) dict range
+    function! directory_viewer.read_target(pos, read_in_background) dict range
         if self.prev_buf_num == self.buf_num || isdirectory(bufname(self.prev_buf_num))
             call s:_filebeagle_messenger.send_error("Cannot read into a directory buffer")
             return 0
@@ -731,7 +731,7 @@ function! s:NewDirectoryViewer()
         let &lazyredraw = l:old_lazyredraw
     endfunction
 
-    function! l:directory_viewer.new_viewer(split_cmd) dict
+    function! directory_viewer.new_viewer(split_cmd) dict
         let l:cur_tab_num = tabpagenr()
         execute "silent keepalt keepjumps " . a:split_cmd . " " . bufname(self.prev_buf_num)
         let directory_viewer = s:NewDirectoryViewer()
@@ -749,7 +749,7 @@ function! s:NewDirectoryViewer()
                     \ )
     endfunction
 
-    function! l:directory_viewer.visit_target(split_cmd, open_in_background) dict range
+    function! directory_viewer.visit_target(split_cmd, open_in_background) dict range
         if v:count == 0
             let l:start_line = a:firstline
             let l:end_line = a:lastline
@@ -831,7 +831,7 @@ function! s:NewDirectoryViewer()
         endif
     endfunction
 
-    function! l:directory_viewer.set_focus_dir(new_dir, focus_file, add_to_history) dict
+    function! directory_viewer.set_focus_dir(new_dir, focus_file, add_to_history) dict
         if a:add_to_history && exists("self['focus_dir']")
             if empty(self.prev_focus_dirs) || self.prev_focus_dirs[-1][0] != self.focus_dir
                 call add(self.prev_focus_dirs, [self.focus_dir, self.focus_file])
@@ -842,7 +842,7 @@ function! s:NewDirectoryViewer()
         call self.refresh()
     endfunction
 
-    function! l:directory_viewer.visit_files(selected_entries, split_cmd, open_in_background)
+    function! directory_viewer.visit_files(selected_entries, split_cmd, open_in_background)
         if len(a:selected_entries) < 1
             return
         endif
@@ -902,7 +902,7 @@ function! s:NewDirectoryViewer()
         let &lazyredraw = l:old_lazyredraw
     endfunction
 
-    function! l:directory_viewer.visit_parent_dir() dict
+    function! directory_viewer.visit_parent_dir() dict
         let pdir = s:parent_dir(self.focus_dir)
         if pdir != self.focus_dir
             let new_focus_file = s:base_dirname(self.focus_dir)
@@ -912,7 +912,7 @@ function! s:NewDirectoryViewer()
         endif
     endfunction
 
-    function! l:directory_viewer.visit_prev_dir() dict
+    function! directory_viewer.visit_prev_dir() dict
         " if len(self.prev_focus_dirs) == 0
         if empty(self.prev_focus_dirs)
             call s:_filebeagle_messenger.send_info("No previous directory available")
@@ -924,7 +924,7 @@ function! s:NewDirectoryViewer()
         endif
     endfunction
 
-    function! l:directory_viewer.yank_target_name(part, register) dict
+    function! directory_viewer.yank_target_name(part, register) dict
         let l:cur_line = line(".")
         if !has_key(self.jump_map, l:cur_line)
             call s:_filebeagle_messenger.send_info("Not a valid path")
@@ -940,11 +940,11 @@ function! s:NewDirectoryViewer()
         execute "let @" . a:register . " = '" . fnameescape(l:target) . "'"
     endfunction
 
-    function! l:directory_viewer.yank_current_dirname(register) dict
+    function! directory_viewer.yank_current_dirname(register) dict
         execute "let @" . a:register . " = '" . fnameescape(self.focus_dir) . "'"
     endfunction
 
-    function! l:directory_viewer.change_vim_working_directory(local) dict
+    function! directory_viewer.change_vim_working_directory(local) dict
         let l:target = self.focus_dir
         if a:local
             let l:cmd = "lcd"
@@ -957,15 +957,15 @@ function! s:NewDirectoryViewer()
         echomsg l:target
     endfunction
 
-    function! l:directory_viewer.yank_current_dirname(register) dict
+    function! directory_viewer.yank_current_dirname(register) dict
         execute "let @" . a:register . " = '" . fnameescape(self.focus_dir) . "'"
     endfunction
 
-    function! l:directory_viewer.refresh() dict
+    function! directory_viewer.refresh() dict
         call self.render_buffer()
     endfunction
 
-    function! l:directory_viewer.goto_pattern(pattern) dict
+    function! directory_viewer.goto_pattern(pattern) dict
         " call cursor(1, 0)
         " let old_ignorecase = &ignorecase
         " set noignorecase
@@ -975,7 +975,7 @@ function! s:NewDirectoryViewer()
         " call cursor(lnum, 0)
     endfunction
 
-    function! l:directory_viewer.new_file(parent_dir, create, open) dict
+    function! directory_viewer.new_file(parent_dir, create, open) dict
         call inputsave()
         let new_fname = input("Add file: ".a:parent_dir, "", "custom,FileBeagleCompleteNewFileName")
         call inputrestore()
@@ -1000,7 +1000,7 @@ function! s:NewDirectoryViewer()
         endif
     endfunction
 
-    function! l:directory_viewer.set_filter_exp() dict
+    function! directory_viewer.set_filter_exp() dict
         let self.filter_exp = input("Filter expression: ", self.filter_exp)
         if empty(self.filter_exp)
             let self.is_filtered = 0
@@ -1012,7 +1012,7 @@ function! s:NewDirectoryViewer()
         call self.refresh()
     endfunction
 
-    function! l:directory_viewer.toggle_filter() dict
+    function! directory_viewer.toggle_filter() dict
         if self.is_filtered
             let self.is_filtered = 0
             call s:_filebeagle_messenger.send_info("Filter OFF")
@@ -1028,7 +1028,7 @@ function! s:NewDirectoryViewer()
         endif
     endfunction
 
-    function! l:directory_viewer.toggle_hidden_and_ignored() dict
+    function! directory_viewer.toggle_hidden_and_ignored() dict
         if self.is_include_hidden || self.is_include_ignored
             let self.is_include_hidden = 0
             let self.is_include_ignored = 0
@@ -1042,7 +1042,7 @@ function! s:NewDirectoryViewer()
     endfunction
 
     " return object
-    return l:directory_viewer
+    return directory_viewer
 
 endfunction
 
