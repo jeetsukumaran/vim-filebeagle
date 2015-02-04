@@ -27,7 +27,7 @@ set cpo&vim
 
 " Script Globals {{{1
 " ============================================================================
-if has("win32")
+if (has("win16") || has("win32") || has("win64")) && !&shellslash
     let s:sep = '\'
     let s:sep_as_pattern = '\\'
 else
@@ -97,7 +97,7 @@ endfunction
 
 function! s:parent_dir(current_dir)
     let l:current_dir = fnamemodify(a:current_dir, ":p")
-    if has("win32")
+    if (has("win16") || has("win32") || has("win64")) && !&shellslash
         let d = join(split(l:current_dir, s:sep_as_pattern)[:-2], s:sep)
         if empty(d)
             let d = a:current_dir
