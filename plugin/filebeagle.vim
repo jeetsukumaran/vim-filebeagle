@@ -65,7 +65,7 @@ function! s:OpenDirHere(dir)
     if isdirectory(a:dir)
         let l:focal_dir = a:dir
         let l:focal_file = bufnr("%")
-        if has("win32")
+        if (has("win16") || has("win32") || has("win64")) && !&shellslash
             let l:focal_dir = substitute(l:focal_dir, '/', '\\', 'g')
             let l:focal_file = substitute(l:focal_file, '/', '\\', 'g')
         endif
