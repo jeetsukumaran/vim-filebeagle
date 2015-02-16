@@ -590,6 +590,13 @@ function! s:NewDirectoryViewer()
 
         endif
 
+        """ Movement keys
+        if g:filebeagle_buffer_map_movement_keys
+            map <buffer> <silent> h <Plug>(FileBeagleBufferFocusOnParent)
+            map <buffer> <silent> l <Plug>(FileBeagleBufferVisitTarget)
+        endif
+
+
     endfunction
 
     " Sets buffer status line.

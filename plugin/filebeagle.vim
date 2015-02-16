@@ -41,6 +41,7 @@ let g:filebeagle_buffer_legacy_key_maps = get(g:, 'filebeagle_buffer_legacy_key_
 let g:filebeagle_buffer_background_key_map_prefix = get(g:, 'filebeagle_buffer_background_key_map_prefix', 'p')
 let g:filebeagle_buffer_normal_key_maps = get(g:, 'filebeagle_buffer_normal_key_maps', {})
 let g:filebeagle_buffer_visual_key_maps = get(g:, 'filebeagle_buffer_visual_key_maps', {})
+let g:filebeagle_buffer_map_movement_keys = get(g:, 'filebeagle_buffer_map_movement_keys', 1)
 
 " 1}}}
 
