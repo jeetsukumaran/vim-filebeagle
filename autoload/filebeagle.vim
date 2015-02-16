@@ -293,8 +293,9 @@ function! s:NewDirectoryViewer()
         " get a new buf reference
         " get a viewport onto it
         execute "silent keepalt keepjumps buffer " . self.buf_num
-        " Sets up buffer environment.
         let b:filebeagle_directory_viewer = self
+        silent! doautocmd User FileBeagleBufNew
+        " Sets up buffer environment.
         call self.setup_buffer_opts()
         call self.setup_buffer_syntax()
         call self.setup_buffer_commands()
@@ -305,7 +306,9 @@ function! s:NewDirectoryViewer()
         let self.is_filtered = a:is_filtered
         let self.filter_exp = a:filter_exp
         " render it
+        silent! doautocmd User FileBeagleReadPre
         call self.render_buffer()
+        silent! doautocmd User FileBeagleReadPost
     endfunction
 
     " Sets buffer options.

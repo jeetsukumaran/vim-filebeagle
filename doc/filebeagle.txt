@@ -307,4 +307,33 @@ g:filebeagle_show_line_relativenumbers~ *g:filebeagle_show_line_relativenumbers*
     invoked). If -1 (default), then no relative number options will be
     explicitly set or unset.
 
+===============================================================================
+                                                        *filebeagle-autocommands*
+CUSTOM AUTOCOMMANDS~
+
+FileBeagle exposes the following autocommand events, to allow you to hook in
+custom functionality:
+
+                                                               *FileBeagleBufNew*
+FileBeagleBufNew        Immediately after creation of the FileBeagle
+                        directory buffer, and before any buffer-local
+                        options, key mappings, commands, etc. have been
+                        defined. The directory viewer object is available
+                        as the buffer variable
+                        `b:filebeagle_directory_viewer`.
+
+                                                              *FileBeagleReadPre*
+FileBeagleReadPre       After creation and full setup (options, key
+                        mappings, commands, etc.) of the FileBeagle
+                        buffer, but before any directory information has
+                        been read.
+
+
+                                                              *FileBeagleReadPost*
+FileBeagleReadPost      After creation, full setup (options, key mappings,
+                        commands, etc.) of the FileBeagle buffer, and
+                        after the directory information has been read,
+                        parsed, and rendered.
+
+
  vim:tw=78:ts=8:ft=help:norl:
