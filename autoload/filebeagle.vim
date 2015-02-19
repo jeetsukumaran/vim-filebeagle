@@ -272,7 +272,7 @@ function! s:NewDirectoryViewer()
                 \ is_include_hidden,
                 \ is_include_ignored
                 \) dict
-        if !&hidden
+        if !&hidden && &modified
             call s:_filebeagle_messenger.send_error("Cannot invoke FileBeagle from modified buffer if 'hidden' is not set")
             return
         endif
