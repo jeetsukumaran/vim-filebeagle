@@ -273,11 +273,15 @@ function! s:NewDirectoryViewer()
                 \ is_include_ignored
                 \) dict
         if !&hidden
-            let hidden_forced = 1
-            set hidden
-        else
-            let hidden_forced = 0
+            call s:_filebeagle_messenger.send_error("Cannot invoke FileBeagle from modified buffer if 'hidden' is not set")
+            return
         endif
+        " if !&hidden
+        "     let hidden_forced = 1
+        "     set hidden
+        " else
+        "     let hidden_forced = 0
+        " endif
         if a:filebeagle_buf_num == -1
             let self.buf_name = s:get_filebeagle_buffer_name()
             let self.buf_num = bufnr(self.buf_name, 1)
@@ -299,9 +303,9 @@ function! s:NewDirectoryViewer()
         " get a new buf reference
         " get a viewport onto it
         execute "silent keepalt keepjumps buffer " . self.buf_num
-        if hidden_forced
-            set nohidden
-        endif
+        " if hidden_forced
+        "     set nohidden
+        " endif
         let b:filebeagle_directory_viewer = self
         silent! doautocmd User FileBeagleBufNew
         " Sets up buffer environment.
