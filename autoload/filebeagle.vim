@@ -1010,7 +1010,15 @@ function! s:NewDirectoryViewer()
                 elseif s:is_path_exists(new_fpath)
                     call s:_filebeagle_messenger.send_error("File already exists: '" . new_fpath . "'")
                 else
-                    call writefile([], new_fpath)
+                    if new_fpath[-1:] =~ '[/\\]'
+                      call mkdir(new_fpath, 'p')
+                    else
+                      let l:path = fnamemodify(new_fpath, ":p:h")
+                      if !isdirectory(l:path)
+                        call mkdir(l:path, 'p')
+                      endif
+                      call writefile([], new_fpath)
+                    endif
                     call self.refresh()
                 endif
             endif
