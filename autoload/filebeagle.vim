@@ -161,6 +161,7 @@ function! s:discover_paths(current_dir, glob_pattern, is_include_hidden, is_incl
     call add(dir_paths, s:build_current_parent_dir_entry(a:current_dir))
     for path_entry in paths
         let path_entry = substitute(path_entry, s:sep_as_pattern.'\+', s:sep, 'g')
+        let path_entry = substitute(path_entry, s:sep_as_pattern.'$', '', 'g')
         let full_path = fnamemodify(path_entry, ":p")
         let basename = fnamemodify(path_entry, ":t")
         let dirname = fnamemodify(path_entry, ":h")
