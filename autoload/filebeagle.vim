@@ -152,6 +152,14 @@ function! s:discover_paths(current_dir, glob_pattern, is_include_hidden, is_incl
         let path_str = glob(a:current_dir.s:sep.a:glob_pattern)
     endif
     let paths = split(path_str, '\n')
+    if g:filebeagle_check_gitignore && !a:is_include_ignored && executable('git')
+      let gitignored = systemlist(
+            \ 'cd ' . a:current_dir . '; ' .
+            \ 'git check-ignore ' . a:current_dir . s:sep .  '*')
+      if !v:shell_error
+        call filter(paths, 'index(gitignored, v:val) == -1')
+      endif
+    endif
     call sort(paths)
     let &wildignore = old_wildignore
     let &suffixes = old_suffixes
