@@ -153,11 +153,12 @@ function! s:discover_paths(current_dir, glob_pattern, is_include_hidden, is_incl
     endif
     let paths = split(path_str, '\n')
     if g:filebeagle_check_gitignore && !a:is_include_ignored && executable('git')
-      let gitignored = systemlist(
+      let l:gitignored_output = system(
             \ 'cd ' . a:current_dir . '; ' .
             \ 'git check-ignore ' . a:current_dir . s:sep .  '*')
+      let l:gitignored = split(l:gitignored_output, "\n")
       if !v:shell_error
-        call filter(paths, 'index(gitignored, v:val) == -1')
+        call filter(paths, 'index(l:gitignored, v:val) == -1')
       endif
     endif
     call sort(paths)
