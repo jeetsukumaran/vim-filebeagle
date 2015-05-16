@@ -701,7 +701,7 @@ function! s:NewDirectoryViewer()
         "     execute "b " . self.prev_buf_num
         " endif
         if self.prev_buf_num != self.buf_num
-            execute "b " . self.prev_buf_num
+            execute "silent keepalt keepjump b " . self.prev_buf_num
         endif
         call self.wipe_and_restore()
     endfunction
