@@ -502,6 +502,11 @@ function! s:NewDirectoryViewer()
             vnoremap <Plug>(FileBeagleBufferBgInsertTargetAtEnd)                :call b:filebeagle_directory_viewer.read_target("$", 1)<CR>
             let l:default_visual_plug_map['FileBeagleBufferBgInsertTargetAtEnd'] = g:filebeagle_buffer_background_key_map_prefix . 'r$'
 
+            nnoremap <Plug>(FileBeagleBufferDeleteFile)                      :call b:filebeagle_directory_viewer.delete_file()<CR>
+            let l:default_normal_plug_map['FileBeagleBufferDeleteFile'] = 'D'
+            vnoremap <Plug>(FileBeagleBufferDeleteFile)                      :call b:filebeagle_directory_viewer.delete_file()<CR>
+            let l:default_visual_plug_map['FileBeagleBufferDeleteFile'] = 'D'
+
             """ Directory Operations
             nnoremap <Plug>(FileBeagleBufferChangeVimWorkingDirectory)          :call b:filebeagle_directory_viewer.change_vim_working_directory(0)<CR>
             let l:default_normal_plug_map['FileBeagleBufferChangeVimWorkingDirectory'] = 'cd'
@@ -1006,6 +1011,64 @@ function! s:NewDirectoryViewer()
         call search(full_pattern, "cw")
         " let &ignorecase = old_ignorecase
         " call cursor(lnum, 0)
+    endfunction
+
+    function! directory_viewer.delete_file() dict range
+        if v:count == 0
+            let l:start_line = a:firstline
+            let l:end_line = a:lastline
+        else
+            let l:start_line = v:count
+            let l:end_line = v:count
+        endif
+
+        let l:selected_entries = []
+        for l:cur_line in range(l:start_line, l:end_line)
+            if !has_key(self.jump_map, l:cur_line)
+                call s:_filebeagle_messenger.send_error("Line " . l:cur_line . " is not a valid target for deletion")
+                return 0
+            endif
+
+            let l:confirm = 0
+            " if item is not a directory and the file is not empty get
+            " confirmation
+            if !self.jump_map[l:cur_line].is_dir && getfsize(self.jump_map[l:cur_line].full_path) > 0
+              let l:confirm = confirm('Are you sure you want to delete ''' . self.jump_map[l:cur_line].basename . '''?', "&Delete\n&No", 0, 'Warning')
+            " if item is a directory get confirmation
+            elseif self.jump_map[l:cur_line].is_dir
+              let l:confirm = confirm('''' .  self.jump_map[l:cur_line].basename . ''' is a directory! are you sure you want to delete it?',
+                    \ "&Delete\n&No", 0, 'Warning')
+            " otherwise who cares right?!
+            else
+              let l:confirm = 1
+            endif
+            if l:confirm == 1
+              call add(l:selected_entries, self.jump_map[l:cur_line])
+            endif
+        endfor
+
+        for item in l:selected_entries
+          if item.is_dir
+            let l:danger = '[''"]\?[\/\\]*[''"]\?'
+            if item.full_path ~= l:danger || shell_escape(item.full_path) ~= l:danger
+              call s:_filebeagle_messenger.send_error("This is a dangerous path to delete: '" . item.fullpath . "'")
+             return 0 
+            endif
+            let l:cmd = g:filebeagle_remove_directory_command . ' ' . shellescape(item.full_path)
+            let l:success = system(l:cmd)
+
+            if v:shell_error != 0
+              call s:_filebeagle_messenger.send_error("Failed to delete directory: '" . item.basename . "': " . l:success)
+            endif
+          else
+            let l:notdeleted = delete(item.full_path) 
+            if l:notdeleted
+              call s:_filebeagle_messenger.send_error("Failed to delete file: '" . item.basename . "'")
+            endif
+          endif
+        endfor 
+        call self.refresh()
+        call cursor(l:start_line, 0)
     endfunction
 
     function! directory_viewer.new_file(parent_dir, create, open) dict

@@ -242,6 +242,17 @@ File Creation/Addition Operations~
                 directory.
 
 -------------------------------------------------------------------------------
+                                                   *filebeagle-deleting-files*
+File Deletion Operations~
+
+Non empty files and directories require confirmation.
+
+
+
+D               Delete the file/directory under cursor
+{count}D        Delete all the files/directories at line {count}
+
+-------------------------------------------------------------------------------
                                                  *filebeagle-set-vim-directory*
 Setting the Vim Directories~
 
@@ -311,6 +322,14 @@ g:filebeagle_check_gitignore~                    *g:filebeagle_check_gitignore*
     Default: 0
     If 1, filebeagle will attempt to exclude gitignored files. Requires
     external git binary on system path.
+
+g:filebeagle_remove_directory_command~   *g:filebeagle_remove_directory_command*
+    Default: 'rm -r'
+    The command used to delete directories. By default this is the *nix
+    'remove recursive' command that will delete all empty directories
+    recursively
+    CAUTION: CHANGING THIS COULD BE DANGEROUS
+
 
 ===============================================================================
                                                         *filebeagle-autocommands*
