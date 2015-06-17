@@ -378,6 +378,7 @@ function! s:NewDirectoryViewer()
     function! directory_viewer.setup_buffer_commands() dict
         command! -buffer -nargs=0 ClipPathname   :call b:filebeagle_directory_viewer.yank_target_name("full_path", "+")
         command! -buffer -nargs=0 ClipDirname    :call b:filebeagle_directory_viewer.yank_current_dirname("+")
+        command! -bang -range -buffer -nargs=1 -complete=command PreFill :<line1>,<line2>call b:filebeagle_directory_viewer.prefill_command(<f-args>, "<bang>" == "!")
     endfunction
 
     " Sets buffer key maps.
@@ -992,6 +993,32 @@ function! s:NewDirectoryViewer()
 
     function! directory_viewer.yank_current_dirname(register) dict
         execute "let @" . a:register . " = '" . fnameescape(self.focus_dir) . "'"
+    endfunction
+
+    function! directory_viewer.prefill_command(cmd, bang) dict range
+        if v:count == 0
+            let l:start_line = a:firstline
+            let l:end_line = a:lastline
+        else
+            let l:start_line = v:count
+            let l:end_line = v:count
+        endif
+
+        let l:num_dir_targets = 0
+        let l:selected_entries = []
+        for l:cur_line in range(l:start_line, l:end_line)
+            call add(l:selected_entries, self.jump_map[l:cur_line])
+        endfor
+
+        let l:filepaths = map(copy(l:selected_entries), 'v:val.full_path')
+        echo l:filepaths
+
+        if a:bang
+          execute a:cmd join(l:filepaths)
+        else
+          call feedkeys(":" . a:cmd . " " . join(l:filepaths), "n")
+        endif
+
     endfunction
 
     function! directory_viewer.refresh() dict
