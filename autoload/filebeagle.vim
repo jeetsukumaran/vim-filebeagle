@@ -283,8 +283,11 @@ function! s:NewDirectoryViewer()
                 \ is_include_ignored
                 \) dict
         if !&hidden && &modified
-            call s:_filebeagle_messenger.send_error("Cannot invoke FileBeagle from modified buffer if 'hidden' is not set")
-            return
+            let l:windows = filter(range(1,winnr('$')), 'winbufnr(v:val) == a:calling_buf_num')
+            if len(l:windows) < 2
+              call s:_filebeagle_messenger.send_error("Cannot invoke FileBeagle from modified buffer if 'hidden' is not set")
+              return
+            endif
         endif
         " if !&hidden
         "     let hidden_forced = 1
