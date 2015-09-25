@@ -508,6 +508,8 @@ function! s:NewDirectoryViewer()
             let l:default_normal_plug_map['FileBeagleBufferChangeVimWorkingDirectory'] = 'cd'
             nnoremap <Plug>(FileBeagleBufferChangeVimLocalDirectory)            :call b:filebeagle_directory_viewer.change_vim_working_directory(1)<CR>
             let l:default_normal_plug_map['FileBeagleBufferChangeVimLocalDirectory'] = 'cl'
+            nnoremap <Plug>(FileBeagleBufferFocusHomeDirectory) :call b:filebeagle_directory_viewer.set_focus_dir(expand("~"), '', 0)<CR>
+            let l:default_normal_plug_map['FileBeagleBufferFocusHomeDirectory'] = '~'
 
             if exists("g:filebeagle_buffer_normal_key_maps")
                 call extend(l:default_normal_plug_map, g:filebeagle_buffer_normal_key_maps)

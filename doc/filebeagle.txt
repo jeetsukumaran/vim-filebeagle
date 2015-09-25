@@ -71,6 +71,7 @@ gh              Toggle showing of hidden/(wild-)ignored files.
                 directory.
 <BS>            Go back to the previous directory in the directory history.
 q               Quit and delete the FileBeagle buffer.
+~               Goto home directory
 
 -------------------------------------------------------------------------------
                                                      *filebeagle-opening-files*
