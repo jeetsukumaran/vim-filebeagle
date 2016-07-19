@@ -635,7 +635,7 @@ function! s:NewDirectoryViewer()
     function! directory_viewer.setup_buffer_statusline() dict
         if has("statusline")
             let self.old_statusline=&l:statusline
-            setlocal statusline=%{FileBeagleStatusLineCurrentDirInfo()}%=%{FileBeagleStatusLineFilterAndHiddenInfo()}
+            let &l:statusline = g:filebeagle_statusline
         else
             let self.old_statusline=""
         endif
@@ -1127,11 +1127,29 @@ endfunction
 " ==============================================================================
 
 function! FileBeagleStatusLineCurrentDirInfo()
-    if !exists("b:filebeagle_directory_viewer")
-        return ""
+    return exists("b:filebeagle_directory_viewer") ? b:filebeagle_directory_viewer.focus_dir : ''
+endfunction
+
+function! FileBeagleStatusLineHiddenInfo(...)
+    if !exists('b:filebeagle_directory_viewer')
+        return ''
     endif
-    let l:status_line = ' ' . b:filebeagle_directory_viewer.focus_dir . ' '
-    return l:status_line
+    let l:label_hidden_dotfiles = get(a:000, 0, 'dotfiles')
+    let l:label_hidden_wildignore = get(a:000, 1, 'wildignore')
+    let l:label_separator = get(a:000, 2, ', ')
+    let l:status_line = []
+    if empty(b:filebeagle_directory_viewer.is_include_hidden)
+        call add(l:status_line, l:label_hidden_dotfiles)
+    endif
+    if empty(b:filebeagle_directory_viewer.is_include_ignored) && !empty(&wildignore)
+        call add(l:status_line, l:label_hidden_wildignore)
+    endif
+    return join(l:status_line, l:label_separator)
+endfunction
+
+function! FileBeagleStatusLineFilterInfo()
+    return exists("b:filebeagle_directory_viewer") && b:filebeagle_directory_viewer.is_filtered && !empty(b:filebeagle_directory_viewer.filter_exp)
+                \ ? b:filebeagle_directory_viewer.filter_exp : ''
 endfunction
 
 function! FileBeagleStatusLineFilterAndHiddenInfo()
@@ -1139,12 +1157,11 @@ function! FileBeagleStatusLineFilterAndHiddenInfo()
         return ""
     endif
     let l:status_line = ""
-    if b:filebeagle_directory_viewer.is_include_hidden || b:filebeagle_directory_viewer.is_include_ignored
-    else
+    if !empty(FileBeagleStatusLineHiddenInfo())
         let l:status_line .= "[+HIDE]"
     endif
-    if b:filebeagle_directory_viewer.is_filtered && !empty(b:filebeagle_directory_viewer.filter_exp)
-        let l:status_line .= "[+FILTER:".b:filebeagle_directory_viewer.filter_exp . "]"
+    if !empty(FileBeagleStatusLineFilterInfo())
+        let l:status_line .= "[+FILTER:" . FileBeagleStatusLineFilterInfo() . "]"
     endif
     return l:status_line
 endfunction

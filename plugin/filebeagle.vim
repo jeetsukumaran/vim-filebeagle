@@ -43,6 +43,7 @@ let g:filebeagle_buffer_normal_key_maps = get(g:, 'filebeagle_buffer_normal_key_
 let g:filebeagle_buffer_visual_key_maps = get(g:, 'filebeagle_buffer_visual_key_maps', {})
 let g:filebeagle_buffer_map_movement_keys = get(g:, 'filebeagle_buffer_map_movement_keys', 1)
 let g:filebeagle_check_gitignore = get(g:, 'filebeagle_check_gitignore', 0)
+let g:filebeagle_statusline = get(g:, 'filebeagle_statusline', '%( %{FileBeagleStatusLineCurrentDirInfo()} %)%=%( %{FileBeagleStatusLineFilterAndHiddenInfo()} %)')
 
 " 1}}}
 
