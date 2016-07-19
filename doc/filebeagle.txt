@@ -313,6 +313,12 @@ g:filebeagle_check_gitignore~                    *g:filebeagle_check_gitignore*
     If 1, filebeagle will attempt to exclude gitignored files. Requires
     external git binary on system path.
 
+g:filebeagle_statusline~                              *g:filebeagle_statusline*
+    Default: %( %{FileBeagleStatusLineCurrentDirInfo()} %)%=%( 
+    %{FileBeagleStatusLineFilterAndHiddenInfo()} %)
+    Defines a statusbar used by filebeagle. See |statusline| for more 
+    information.
+
 ===============================================================================
                                                         *filebeagle-autocommands*
 CUSTOM AUTOCOMMANDS~
@@ -340,6 +346,5 @@ FileBeagleReadPost      After creation, full setup (options, key mappings,
                         commands, etc.) of the FileBeagle buffer, and
                         after the directory information has been read,
                         parsed, and rendered.
-
 
  vim:tw=78:ts=8:ft=help:norl:
