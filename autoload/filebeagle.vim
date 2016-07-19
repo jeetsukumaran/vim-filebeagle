@@ -1027,7 +1027,9 @@ function! s:NewDirectoryViewer()
     endfunction
 
     function! directory_viewer.refresh() dict
+        silent! doautocmd User FileBeagleRefreshPre
         call self.render_buffer()
+        silent! doautocmd User FileBeagleRefreshPost
     endfunction
 
     function! directory_viewer.goto_pattern(pattern) dict
