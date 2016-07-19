@@ -13,6 +13,7 @@ CONTENTS~
        3.4 Setting the Vim Directories ....... |filebeagle-set-vim-directory|
     4. Directory Buffer Commands ............. |filebeagle-buffer-commands|
     5. Options and Settings .................. |filebeagle-options|
+    6. Custom Autocommands ................... |filebeagle-autocommands|
 
 ===============================================================================
                                                *filebeagle-invocation-commands*
@@ -341,5 +342,10 @@ FileBeagleReadPost      After creation, full setup (options, key mappings,
                         after the directory information has been read,
                         parsed, and rendered.
 
+FileBeagleRefreshPre    Immediately before updating the content of the 
+                        directory buffer.
+
+FileBeagleRefreshPost   Immediately after updating the content of the
+                        directory buffer.
 
  vim:tw=78:ts=8:ft=help:norl:
