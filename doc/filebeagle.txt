@@ -320,6 +320,10 @@ g:filebeagle_statusline~                              *g:filebeagle_statusline*
     Defines a statusbar used by filebeagle. See |statusline| for more
     information.
 
+g:filebeagle_disable_statusline~              *g:filebeagle_disable_statusline*
+    Default: 0
+    Disable filebeagle statusline overriding.
+
 ===============================================================================
                                                         *filebeagle-autocommands*
 CUSTOM AUTOCOMMANDS~

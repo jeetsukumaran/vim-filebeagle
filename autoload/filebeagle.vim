@@ -637,11 +637,13 @@ function! s:NewDirectoryViewer()
 
     " Sets buffer status line.
     function! directory_viewer.setup_buffer_statusline() dict
-        if has("statusline")
-            let self.old_statusline=&l:statusline
-            let &l:statusline = g:filebeagle_statusline
-        else
-            let self.old_statusline=""
+        if !g:filebeagle_disable_statusline
+            if has("statusline")
+                let self.old_statusline=&l:statusline
+                let &l:statusline = g:filebeagle_statusline
+            else
+                let self.old_statusline=""
+            endif
         endif
     endfunction
 
