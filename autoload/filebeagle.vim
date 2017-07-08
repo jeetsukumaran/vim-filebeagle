@@ -146,16 +146,20 @@ function! s:discover_paths(current_dir, glob_pattern, is_include_hidden, is_incl
         let &wildignore = ""
         let &suffixes = ""
     endif
+
+    let l:current_dir = substitute(a:current_dir, '{', '\\{', 'g')
+    let l:current_dir = substitute(l:current_dir, '}', '\\}', 'g')
+
     if a:is_include_hidden
-        let path_str = glob(a:current_dir.s:sep.'.[^.]'.a:glob_pattern)."\n".glob(a:current_dir.s:sep.a:glob_pattern)
+        let path_str = glob(l:current_dir.s:sep.'.[^.]'.a:glob_pattern)."\n".glob(l:current_dir.s:sep.a:glob_pattern)
     else
-        let path_str = glob(a:current_dir.s:sep.a:glob_pattern)
+        let path_str = glob(l:current_dir.s:sep.a:glob_pattern)
     endif
     let paths = split(path_str, '\n')
     if g:filebeagle_check_gitignore && !a:is_include_ignored && executable('git')
       let l:gitignored_output = system(
-            \ 'cd ' . a:current_dir . '; ' .
-            \ 'git check-ignore ' . a:current_dir . s:sep .  '*')
+            \ 'cd ' . l:current_dir . '; ' .
+            \ 'git check-ignore ' . l:current_dir . s:sep .  '*')
       let l:gitignored = split(l:gitignored_output, "\n")
       if !v:shell_error
         call filter(paths, 'index(l:gitignored, v:val) == -1')
@@ -166,8 +170,8 @@ function! s:discover_paths(current_dir, glob_pattern, is_include_hidden, is_incl
     let &suffixes = old_suffixes
     let dir_paths = []
     let file_paths = []
-    " call add(dir_paths, s:GetCurrentDirEntry(a:current_dir))
-    call add(dir_paths, s:build_current_parent_dir_entry(a:current_dir))
+    " call add(dir_paths, s:GetCurrentDirEntry(l:current_dir))
+    call add(dir_paths, s:build_current_parent_dir_entry(l:current_dir))
     for path_entry in paths
         let path_entry = substitute(path_entry, s:sep_as_pattern.'\+', s:sep, 'g')
         let path_entry = substitute(path_entry, s:sep_as_pattern.'$', '', 'g')
