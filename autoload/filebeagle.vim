@@ -696,9 +696,9 @@ function! s:NewDirectoryViewer()
             catch //
             endtry
         endif
-        " if has("title")
-        "     let &titlestring = self.old_titlestring
-        " endif
+        if has("title")
+            let &titlestring = self.old_titlestring
+        endif
     endfunction
 
     " Close and quit the viewer.
