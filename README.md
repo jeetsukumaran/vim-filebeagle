@@ -44,8 +44,8 @@ instead of the current working directory.
 In either case, once a directory viewer is open, you can use any of your normal
 navigation keys/commands to move to a file or directory of your choice. Once
 you have selected a file or directory, you can type `<ENTER>` or "`o`" to open
-it for editing in the current window. Or you can type `CTRL-V` to edit it in a
-new vertical split, `CTRL-S` to edit it in a new horizontal split, or `CTRL-T`
+it for editing in the current window. Or you can type `v` to edit it in a
+new vertical split, `s` to edit it in a new horizontal split, or `t`
 to edit it in a new tab. Even better, if you make sure that line numbers are
 enabled, you can simply type the line number followed by '`o`' or any of the
 other maps to instantly open the file or directory listed at the given line
