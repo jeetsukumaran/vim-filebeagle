@@ -898,7 +898,7 @@ function! s:NewDirectoryViewer()
         endif
         let l:opened_basenames = []
         for l:entry in a:selected_entries
-            let l:path_to_open = fnameescape(l:entry.full_path)
+            let l:path_to_open = fnameescape(fnamemodify(l:entry.full_path, ":."))
             try
                 execute l:split_cmd . " " . l:path_to_open
             catch /E37:/
