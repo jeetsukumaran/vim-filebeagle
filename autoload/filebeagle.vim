@@ -447,27 +447,33 @@ function! s:NewDirectoryViewer()
             execute "vmap <buffer> <silent> " . g:filebeagle_buffer_background_key_map_prefix . "<CR> <Plug>(FileBeagleBufferBgVisitTarget)"
 
             nnoremap <Plug>(FileBeagleBufferSplitVerticalVisitTarget)           :<C-U>call b:filebeagle_directory_viewer.visit_target("vert sp", 0)<CR>
-            let l:default_normal_plug_map['FileBeagleBufferSplitVerticalVisitTarget'] = 'v'
+            " let l:default_normal_plug_map['FileBeagleBufferSplitVerticalVisitTarget'] = 'v'
+            let l:default_normal_plug_map['FileBeagleBufferSplitVerticalVisitTarget'] = '<C-v>'
             vnoremap <Plug>(FileBeagleBufferSplitVerticalVisitTarget)           :call b:filebeagle_directory_viewer.visit_target("vert sp", 0)<CR>
-            let l:default_visual_plug_map['FileBeagleBufferSplitVerticalVisitTarget'] = 'v'
+            " let l:default_visual_plug_map['FileBeagleBufferSplitVerticalVisitTarget'] = 'v'
+            let l:default_visual_plug_map['FileBeagleBufferSplitVerticalVisitTarget'] = '<C-v>'
             nnoremap <Plug>(FileBeagleBufferBgSplitVerticalVisitTarget)         :<C-U>call b:filebeagle_directory_viewer.visit_target("rightbelow vert sp", 1)<CR>
             let l:default_normal_plug_map['FileBeagleBufferBgSplitVerticalVisitTarget'] = g:filebeagle_buffer_background_key_map_prefix . 'v'
             vnoremap <Plug>(FileBeagleBufferBgSplitVerticalVisitTarget)         :call b:filebeagle_directory_viewer.visit_target("rightbelow vert sp", 1)<CR>
             let l:default_visual_plug_map['FileBeagleBufferBgSplitVerticalVisitTarget'] = g:filebeagle_buffer_background_key_map_prefix . 'v'
 
             nnoremap <Plug>(FileBeagleBufferSplitVisitTarget)                   :<C-U>call b:filebeagle_directory_viewer.visit_target("sp", 0)<CR>
-            let l:default_normal_plug_map['FileBeagleBufferSplitVisitTarget'] = 's'
+            " let l:default_normal_plug_map['FileBeagleBufferSplitVisitTarget'] = 's'
+            let l:default_normal_plug_map['FileBeagleBufferSplitVisitTarget'] = '<C-s>'
             vnoremap <Plug>(FileBeagleBufferSplitVisitTarget)                   :call b:filebeagle_directory_viewer.visit_target("sp", 0)<CR>
-            let l:default_visual_plug_map['FileBeagleBufferSplitVisitTarget'] = 's'
+            " let l:default_visual_plug_map['FileBeagleBufferSplitVisitTarget'] = 's'
+            let l:default_visual_plug_map['FileBeagleBufferSplitVisitTarget'] = '<C-s>'
             nnoremap <Plug>(FileBeagleBufferBgSplitVisitTarget)                 :<C-U>call b:filebeagle_directory_viewer.visit_target("rightbelow sp", 1)<CR>
             let l:default_normal_plug_map['FileBeagleBufferBgSplitVisitTarget'] = g:filebeagle_buffer_background_key_map_prefix . 's'
             vnoremap <Plug>(FileBeagleBufferBgSplitVisitTarget)                 :call b:filebeagle_directory_viewer.visit_target("rightbelow sp", 1)<CR>
             let l:default_visual_plug_map['FileBeagleBufferBgSplitVisitTarget'] = g:filebeagle_buffer_background_key_map_prefix . 's'
 
             nnoremap <Plug>(FileBeagleBufferTabVisitTarget)                     :<C-U>call b:filebeagle_directory_viewer.visit_target("tabedit", 0)<CR>
-            let l:default_normal_plug_map['FileBeagleBufferTabVisitTarget'] = 't'
+            " let l:default_normal_plug_map['FileBeagleBufferTabVisitTarget'] = 't'
+            let l:default_normal_plug_map['FileBeagleBufferTabVisitTarget'] = '<C-t>'
             vnoremap <Plug>(FileBeagleBufferTabVisitTarget)                     :call b:filebeagle_directory_viewer.visit_target("tabedit", 0)<CR>
-            let l:default_visual_plug_map['FileBeagleBufferTabVisitTarget'] = 't'
+            " let l:default_visual_plug_map['FileBeagleBufferTabVisitTarget'] = 't'
+            let l:default_visual_plug_map['FileBeagleBufferTabVisitTarget'] = '<C-t>'
             nnoremap <Plug>(FileBeagleBufferBgTabVisitTarget)                   :<C-U>call b:filebeagle_directory_viewer.visit_target("tabedit", 1)<CR>
             let l:default_normal_plug_map['FileBeagleBufferBgTabVisitTarget'] = g:filebeagle_buffer_background_key_map_prefix . 't'
             vnoremap <Plug>(FileBeagleBufferBgTabVisitTarget)                   :call b:filebeagle_directory_viewer.visit_target("tabedit", 1)<CR>
