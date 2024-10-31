@@ -171,7 +171,9 @@ function! s:discover_paths(current_dir, glob_pattern, is_include_hidden, is_incl
     let dir_paths = []
     let file_paths = []
     " call add(dir_paths, s:GetCurrentDirEntry(l:current_dir))
-    call add(dir_paths, s:build_current_parent_dir_entry(l:current_dir))
+    if g:filebeagle_show_parent 
+      call add(dir_paths, s:build_current_parent_dir_entry(l:current_dir))
+    endif
     for path_entry in paths
         let path_entry = substitute(path_entry, s:sep_as_pattern.'\+', s:sep, 'g')
         let path_entry = substitute(path_entry, s:sep_as_pattern.'$', '', 'g')
